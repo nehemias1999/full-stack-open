@@ -28,19 +28,25 @@ const Statistic = ({name, number}) => {
 const Statistics = ({good, neutral, bad}) => {
   const total = (good + neutral + bad)
 
-  const average = (good - bad) / total || 0;
+  if(total !== 0) {
+    const average = (good - bad) / total;
 
-  const positive = (good / total) * 100 || 0;
+    const positive = (good / total) * 100;
 
+    return (
+      <>
+        <Statistic name='good' number={good}/>
+        <Statistic name='neutral' number={neutral}/>
+        <Statistic name='bad' number={bad}/>
+        <Statistic name='all' number={total}/>
+        <Statistic name='average' number={average}/>
+        <Statistic name='positive' number={positive + ' %'}/>
+      </>
+    )
+  } 
+    
   return (
-    <>
-      <Statistic name='good' number={good}/>
-      <Statistic name='neutral' number={neutral}/>
-      <Statistic name='bad' number={bad}/>
-      <Statistic name='all' number={total}/>
-      <Statistic name='average' number={average}/>
-      <Statistic name='positive' number={positive + ' %'}/>
-    </>
+    <p>No feedback given</p>
   )
 }
 
