@@ -8,6 +8,14 @@ const AnecdoteLine = ({anecdote}) => {
   )
 }
 
+const AnecdoteVotes = ({votes}) => {
+  return (
+    <p>
+      has {votes} votes
+    </p>
+  )
+}
+
 const Button = ({handleClick, text}) => {
   return (
     <button onClick={handleClick}>
@@ -38,9 +46,19 @@ const App = () => {
     )
   }
 
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
+
+  const handleVoteClick = () => {
+    const newVotes = [...votes]
+    newVotes[selected] += 1
+    setVotes(newVotes)
+  }
+
   return (
     <div>
       <AnecdoteLine anecdote={anecdotes[selected]}/>
+      <AnecdoteVotes votes={votes[selected]}/>
+      <Button handleClick={handleVoteClick} text='vote'/>
       <Button handleClick={handleNextClick} text='next anecdote'/>
     </div>
   )
