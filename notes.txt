@@ -99,7 +99,9 @@
 
          We must never mutate state directly in React!
 
+        const result = condition ? val1 : val2
 
+        We showed the comparison operator first to emphasize an important detail: in JavaScript val1 == val2 does not always work as expected. When performing comparisons, it's therefore safer to exclusively use val1 === val2
 
 
 
