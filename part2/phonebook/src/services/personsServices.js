@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import Persons from "../components/PersonsList";
 const baseURL = 'http://localhost:3001/persons'
 
 const getAll = () => {
@@ -18,8 +19,10 @@ const update = (id, newObject) => {
 }
 
 const remove = id => {
-    return axios.delete(baseURL, id)
-        .then(response => response.data)
+    return axios.delete(`${baseURL}/${id}`)
+        .then(response =>
+            response.data
+        )
 }
 
 export default { 

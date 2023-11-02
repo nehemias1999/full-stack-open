@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react'
 import Title from './components/Title'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import Persons from './components/Persons'
+import Persons from './components/PersonsList'
 
-import personService from './services/persons'
+import personService from './services/personsServices'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -62,6 +62,18 @@ const App = () => {
 
   }
 
+  const removePerson = id => {
+    const personToRemove = persons.find(person => person.id === id)
+
+    if(confirm(`Delete ${personToRemove.name} ?`)) {
+      personService
+      .remove(id)
+      .then(
+          setPersons(persons.filter(person => person.id !== id))
+      )
+    }
+  }
+
   return (
     <div>
 
@@ -78,7 +90,8 @@ const App = () => {
       <Title title={'Numbers'}/>
 
       <Persons isSearchLabelEmpty={newSearch === ''} 
-               personsList={persons} searchList={newSearchList}/> 
+               personsList={persons} searchList={newSearchList} 
+               removePerson={removePerson}/> 
     
     </div>
   )
