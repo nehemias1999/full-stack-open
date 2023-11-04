@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import Title from './components/Title'
+import StateMessage from './components/StateMessage'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/PersonsList'
@@ -9,10 +10,14 @@ import personService from './services/personsServices'
 
 const App = () => {
   const [persons, setPersons] = useState([])
+  
   const [newSearch, setNewSearch] = useState('')
   const [newSearchList, setNewSearchList] = useState([])
+
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+
+  const [newStateMessage, setStateMessage] = useState('')
 
   useEffect(() => {
     personService
@@ -55,10 +60,17 @@ const App = () => {
 
         personService
           .update(toUpdatePerson.id, personObject)
-          .then(updatedPerson => 
+          .then(updatedPerson => {
             setPersons(
-              persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson)
-            ))
+              persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson)  
+            )
+
+            setStateMessage(`Updated ${updatedPerson.name}`)
+            setTimeout(() => {
+              setStateMessage('')
+            }, 5000)  
+          })
+
       }
 
     } else {
@@ -66,13 +78,18 @@ const App = () => {
       const personObject = {
           name: newName,
           number: newNumber
-        }
+      }
     
         personService
           .create(personObject)
           .then(addedPerson => {
             setPersons(
               persons.concat(addedPerson))
+
+              setStateMessage(`Added ${addedPerson.name}`)
+              setTimeout(() => {
+                setStateMessage('')
+              }, 5000)
           })
 
     }
@@ -89,10 +106,15 @@ const App = () => {
 
       personService
       .remove(id)
-      .then(
+      .then(response => {
         setPersons(persons.filter(person => person.id !== id))
-      )
-
+        
+        setStateMessage(`Removed ${personToRemove.name}`)
+        setTimeout(() => {
+          setStateMessage('')
+        }, 5000)
+        
+      })
     }
 
     setNewName('')
@@ -104,6 +126,8 @@ const App = () => {
     <div>
 
       <Title title={'Phonebook'}/>
+
+      <StateMessage message={newStateMessage}/>
       
       <Filter newSearch={newSearch} handleSearchChange={handleSearchChange}/>
 
