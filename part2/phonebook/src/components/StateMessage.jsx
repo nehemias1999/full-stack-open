@@ -1,9 +1,9 @@
 
-const StateMessage = ({ message }) => {
-    if (message === '')
+const StateMessage = ({ message, messageType }) => {
+    if (message === null)
         return null
     
-    const messageStyle = {
+    const successMessageStyle = {
         color: 'green',
         background: 'lightgrey',
         fontSize: 20,
@@ -13,8 +13,18 @@ const StateMessage = ({ message }) => {
         marginBottom: 10
     }
 
+    const errorMessageStyle = {
+        color: 'red',
+        background: 'lightgrey',
+        fontSize: 20,
+        borderStyle: 'solid',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10
+    }
+
     return (
-        <div className="message-error" style={messageStyle}>
+        <div className="message-state" style={(messageType === 'success') ? successMessageStyle : errorMessageStyle }>
             {message}                    
         </div>
     )

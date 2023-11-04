@@ -17,7 +17,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
 
-  const [newStateMessage, setStateMessage] = useState('')
+  const [newStateMessage, setStateMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -65,10 +65,19 @@ const App = () => {
               persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson)  
             )
 
-            setStateMessage(`Updated ${updatedPerson.name}`)
+            setStateMessage(`Updated ${updatedPerson.name}`, 'success')
             setTimeout(() => {
-              setStateMessage('')
+              setStateMessage(null, null)
             }, 5000)  
+          })
+          .catch(error => {
+            setStateMessage(`Information of '${toUpdatePerson.name}' has already been removed from server`, 'success')
+            
+            setTimeout(() => {
+              setErrorMessage(null, null)
+            }, 5000)
+
+            setPersons(persons.filter(person => person.id !== toUpdatePerson.id))
           })
 
       }
@@ -86,9 +95,9 @@ const App = () => {
             setPersons(
               persons.concat(addedPerson))
 
-              setStateMessage(`Added ${addedPerson.name}`)
+              setStateMessage(`Added ${addedPerson.name}`, 'success')
               setTimeout(() => {
-                setStateMessage('')
+                setStateMessage(null, null)
               }, 5000)
           })
 
@@ -109,9 +118,9 @@ const App = () => {
       .then(response => {
         setPersons(persons.filter(person => person.id !== id))
         
-        setStateMessage(`Removed ${personToRemove.name}`)
+        setStateMessage(`Removed ${personToRemove.name}`, 'success')
         setTimeout(() => {
-          setStateMessage('')
+          setStateMessage(null, null)
         }, 5000)
         
       })
@@ -127,7 +136,7 @@ const App = () => {
 
       <Title title={'Phonebook'}/>
 
-      <StateMessage message={newStateMessage}/>
+      <StateMessage message={newStateMessage} messageType={'success'}/>
       
       <Filter newSearch={newSearch} handleSearchChange={handleSearchChange}/>
 
