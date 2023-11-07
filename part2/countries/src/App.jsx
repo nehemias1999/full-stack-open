@@ -15,9 +15,7 @@ function App() {
     countriesServices
       .getAll()
       .then(response => {
-
-        setNewCountriesList(response)
-
+        setNewCountriesList(response.map(country => country.name.common))
       })
   }, [])
 
@@ -25,8 +23,7 @@ function App() {
     const newSearch = event.target.value.trim().toLowerCase()
     
     setNewFilterList(
-      countriesList.filter(country => country.name.common
-        .toLowerCase().includes(newSearch))
+      countriesList.filter(country => country.toLowerCase().includes(newSearch))
     )
     setNewSearch(event.target.value)
   }

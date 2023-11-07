@@ -10,7 +10,7 @@ const CountriesList = ({ countriesList }) => {
         <ul style={listStyle}>
             {
                 countriesList.map((country, index) => 
-                    <CountryItem key={index} name={country.name.common} />
+                    <CountryItem key={index} name={country} />
                 )
             }
         </ul>
