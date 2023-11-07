@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 
 import Title from './components/Title'
-import StateMessage from './components/StateMessage'
+import SuccessMessage from './components/messages/SuccessMessage'
+import ErrorMessage from './components/messages/ErrorMessage'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/PersonsList'
@@ -17,7 +18,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
 
-  const [newStateMessage, setStateMessage] = useState(null)
+  const [newSuccessMessage, setSuccessMessage] = useState(null)
+  const [newErrorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -29,10 +31,10 @@ const App = () => {
   [])
 
   const handleSearchChange = (event) => {
-    setNewSearch(event.target.value)
+    const newSearchName = event.target.value.trim().toLowerCase()
+    setNewSearch(newSearchName)
     setNewSearchList(
-      persons.filter(person => person.name.toLowerCase()
-                                 .includes(event.target.value.toLowerCase()))
+      persons.filter(person => person.name.toLowerCase().includes(newSearchName))
     )
   }
 
@@ -47,11 +49,13 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    if (persons.some(person => person.name === newName)) { 
+    const newPersonFullname = newName.trim()
 
-      if (confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+    if (persons.some(person => person.name === newPersonFullname)) { 
+
+      if (confirm(`${newPersonFullname} is already added to phonebook, replace the old number with a new one?`)) {
         
-        const toUpdatePerson = persons.find(person => person.name === newName)
+        const toUpdatePerson = persons.find(person => person.name === newPersonFullname)
 
         const personObject = {
           ...toUpdatePerson,
@@ -59,22 +63,23 @@ const App = () => {
         }
 
         personService
-          .update(toUpdatePerson.id, personObject)
+          .update(personObject.id, personObject)
           .then(updatedPerson => {
             setPersons(
               persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson)  
             )
 
-            setStateMessage(`Updated ${updatedPerson.name}`, 'success')
+            setSuccessMessage(`Updated ${updatedPerson.name}`)
             setTimeout(() => {
-              setStateMessage(null, null)
-            }, 5000)  
+              setSuccessMessage(null)
+            }, 5000)
+
           })
           .catch(error => {
-            setStateMessage(`Information of '${toUpdatePerson.name}' has already been removed from server`, 'success')
-            
+
+            setErrorMessage(`Information of '${toUpdatePerson.name}' has already been removed from server`)
             setTimeout(() => {
-              setErrorMessage(null, null)
+              setErrorMessage(null)
             }, 5000)
 
             setPersons(persons.filter(person => person.id !== toUpdatePerson.id))
@@ -95,10 +100,11 @@ const App = () => {
             setPersons(
               persons.concat(addedPerson))
 
-              setStateMessage(`Added ${addedPerson.name}`, 'success')
+              setSuccessMessage(`Added ${addedPerson.name}`)
               setTimeout(() => {
-                setStateMessage(null, null)
+                setSuccessMessage(null)
               }, 5000)
+
           })
 
     }
@@ -118,9 +124,9 @@ const App = () => {
       .then(response => {
         setPersons(persons.filter(person => person.id !== id))
         
-        setStateMessage(`Removed ${personToRemove.name}`, 'success')
+        setSuccessMessage(`Removed ${personToRemove.name}`)
         setTimeout(() => {
-          setStateMessage(null, null)
+          setSuccessMessage(null)
         }, 5000)
         
       })
@@ -136,21 +142,22 @@ const App = () => {
 
       <Title title={'Phonebook'}/>
 
-      <StateMessage message={newStateMessage} messageType={'success'}/>
+      <SuccessMessage message={newSuccessMessage} />
+      <ErrorMessage message={newErrorMessage} />
       
-      <Filter newSearch={newSearch} handleSearchChange={handleSearchChange}/>
+      <Filter newSearch={newSearch} handleSearchChange={handleSearchChange} />
 
-      <Title title={'add a new'}/>
+      <Title title={'add a new'} />
 
       <PersonForm name={newName} handleName={handleNameChange} 
                   number={newNumber} handleNumber={handleNumberChange} 
-                  addPerson={addPerson}/>
+                  addPerson={addPerson} />
 
-      <Title title={'Numbers'}/>
+      <Title title={'Numbers'} />
 
       <Persons isSearchLabelEmpty={newSearch === ''} 
                personsList={persons} searchList={newSearchList} 
-               removePerson={removePerson}/> 
+               removePerson={removePerson} /> 
     
     </div>
   )
