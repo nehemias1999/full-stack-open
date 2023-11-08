@@ -24,6 +24,8 @@ const CountryData = ({ country }) => {
 
             <img src={country.flags.svg} alt={country.flags.alt} />       
 
+            <Title text={'Weather in ' + country.capital} />
+
         </div>
     )
 }

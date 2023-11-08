@@ -1,25 +1,4 @@
 
 import PersonItem from './PersonItem'
 
-const Persons = ({ isSearchLabelEmpty, personsList, searchList, removePerson }) => {
-    return (
-        <ul>
-            {
-               (isSearchLabelEmpty) ?
-               (
-                    personsList.map(person =>
-                        <PersonItem key={person.id} name={person.name} 
-                                    number={person.number} removePerson={() => removePerson(person.id)}/>
-                    )
-               ) : (
-                    searchList.map(person =>
-                        <PersonItem key={person.id} name={person.name} 
-                        number={person.number} removePerson={() => removePerson(person.id)}/>
-                    )
-               ) 
-            }
-        </ul>
-    )
-}
-
-export default Persons
+https://samples.openweathermap.org/data/2.5/find?q=London&appid=b1b15e88fa797225412429c1c50c122a1r

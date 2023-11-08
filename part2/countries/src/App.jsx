@@ -15,7 +15,7 @@ function App() {
     countriesServices
       .getAll()
       .then(response => {
-        setNewCountriesList(response.map(country => country.name.common))
+        setNewCountriesList(response)
       })
   }, [])
 
@@ -23,7 +23,7 @@ function App() {
     const newSearch = event.target.value.trim().toLowerCase()
     
     setNewFilterList(
-      countriesList.filter(country => country.toLowerCase().includes(newSearch))
+      countriesList.filter(country => country.name.common.toLowerCase().includes(newSearch))
     )
     setNewSearch(event.target.value)
   }
@@ -34,11 +34,9 @@ function App() {
       <Filter text={'find countries'} search={search} handleSearch={handleSearchChange} />
 
       {
-
-        !search
-          ? <CountriesList countriesList={countriesList} />
-          : <FilterList filterList={filterList} />
-
+        (!search) 
+        ? <CountriesList countriesList={countriesList} />
+        : <FilterList filterList={filterList} />
       }
 
     </div>

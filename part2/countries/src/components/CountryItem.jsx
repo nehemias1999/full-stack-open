@@ -1,8 +1,8 @@
 
-const CountryItem = ({ name }) => {
+const CountryItem = ({ name, handleButton }) => {
     return (
       <li>
-        {name}
+        {name} <button onClick={handleButton}>show</button>
       </li>
     )
 }
