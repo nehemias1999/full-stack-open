@@ -21,7 +21,7 @@ function App() {
 
   const handleSearchChange = (event) => {
     const newSearch = event.target.value.trim().toLowerCase()
-    
+
     setNewFilterList(
       countriesList.filter(country => country.name.common.toLowerCase().includes(newSearch))
     )
@@ -34,9 +34,9 @@ function App() {
       <Filter text={'find countries'} search={search} handleSearch={handleSearchChange} />
 
       {
-        (!search) 
-        ? <CountriesList countriesList={countriesList} />
-        : <FilterList filterList={filterList} />
+        (!search)
+          ? <CountriesList countriesList={countriesList} />
+          : <FilterList filterList={filterList} />
       }
 
     </div>
